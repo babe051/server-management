@@ -119,7 +119,7 @@ Follow these steps to get the Server Management TD API up and running on your lo
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/server-management-td.git
+git clone https://github.com/babe051/server-management.git
 cd server-management-td
 ```
 
