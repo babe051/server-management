@@ -34,7 +34,7 @@ The project is built using the following technologies:
     *   Spring Boot Starter Validation
 *   **Database**: H2 Database (in-memory)
 *   **ORM**: Hibernate (via Spring Data JPA)
-*   **API Documentation**: SpringDoc OpenAPI (for Swagger UI)
+*   **API Documentation**: SpringDoc OpenAPI 2.7.0 (for Swagger UI)
 *   **Utility**: Project Lombok
 *   **Build Tool**: Apache Maven (via Maven Wrapper)
 *   **Testing**: JUnit 5, Mockito, Spring Boot Starter Test
@@ -84,7 +84,7 @@ The project is built using the following technologies:
 ## 🌐 API Endpoints
 
 The API is exposed at `http://localhost:8080/api/servers` (default port).
-Detailed documentation can be found at the **Swagger UI**: `http://localhost:8080/swagger-ui.html`.
+Detailed documentation can be found at the **Swagger UI**: `http://localhost:8080/swagger-ui/index.html`.
 
 All error responses follow a consistent JSON format:
 ```json
@@ -155,7 +155,7 @@ The application will start on port `8080` by default.
 
 Once the application is running, you can access:
 *   **API Endpoints**: `http://localhost:8080/api/servers`
-*   **Swagger UI (API Documentation)**: `http://localhost:8080/swagger-ui.html`
+*   **Swagger UI (API Documentation)**: `http://localhost:8080/swagger-ui/index.html`
 *   **H2 Console**: `http://localhost:8080/h2-console`
     *   **JDBC URL**: `jdbc:h2:mem:serversdb`
     *   **User Name**: `sa`
@@ -181,8 +181,48 @@ Application-specific configurations (like H2 database settings) are managed with
 
 The project includes comprehensive unit and integration tests for the controllers, services, and repositories.
 
-*   **Frameworks**: JUnit 5, Mockito (for mocking dependencies), Spring Boot Test, Spring Data JPA Test.
-*   **Test Location**: All test files are located in `src/test/java/com/td/server_management_td/`.
+### Test Coverage
+
+The project has **28 tests** covering all layers of the application:
+
+*   **ServerServiceImplTest** (11 tests): Unit tests for business logic
+    *   List servers
+    *   Create server (with default STOPPED status)
+    *   Rename server (success and not found scenarios)
+    *   Get server status (success and not found scenarios)
+    *   Start server
+    *   Stop server
+    *   Delete server (when stopped, when running, and not found scenarios)
+
+*   **ServerControllerTest** (8 tests): Unit tests for REST API endpoints
+    *   GET `/api/servers` - List all servers
+    *   POST `/api/servers` - Create server (with validation)
+    *   PUT `/api/servers/{id}/rename` - Rename server
+    *   GET `/api/servers/{id}/status` - Get server status
+    *   PUT `/api/servers/{id}/start` - Start server
+    *   PUT `/api/servers/{id}/stop` - Stop server
+    *   DELETE `/api/servers/{id}` - Delete server
+    *   Validation error handling
+
+*   **ServerRepositoryTest** (8 tests): Integration tests for JPA repository
+    *   Save server
+    *   Find by ID
+    *   Find by name
+    *   Find by IP address
+    *   Find all servers
+    *   Delete server
+    *   Update server
+    *   Not found scenarios
+
+*   **ServerManagementTdApplicationTests** (1 test): Spring Boot context loading test
+
+### Testing Frameworks
+
+*   **JUnit 5**: Primary testing framework
+*   **Mockito**: For mocking dependencies in unit tests
+*   **Spring Boot Test**: For integration testing with Spring context
+*   **Spring Data JPA Test**: For repository testing with embedded database
+*   **MockMvc**: For testing REST controllers
 
 ### How to run tests
 
@@ -197,6 +237,8 @@ To execute all tests, use the Maven Wrapper:
 ```bash
 .\mvnw.cmd test
 ```
+
+All 28 tests should pass successfully. The tests use an in-memory H2 database for integration tests, ensuring no external dependencies are required.
 
 ## 🚀 Deployment
 
